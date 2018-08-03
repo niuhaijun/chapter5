@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+  <!-- 父子<bean> -->
+  <bean id="abstractCar" class="com.smart.tagdepend.Car" abstract="true"
+    p:brand="红旗CA72"
+    p:color="黑色"
+    p:price="2000.00"/>
+
+  <bean id="car3" parent="abstractCar"
+    p:color="红色"/>
+  <bean id="car4" parent="abstractCar"
+    p:color="白色"/>
+
+  <!-- <bean>的前置依赖 -->
+  <bean id="sysInit" class="com.smart.tagdepend.SysInit"/>
+  <bean id="cacheManager" class="com.smart.tagdepend.CacheManager" depends-on="sysInit"/>
+
+  <!-- <bean>引用 -->
+  <bean id="car" class="com.smart.tagdepend.Car"/>
+  <bean id="boss" class="com.smart.tagdepend.Boss"
+    p:carId-ref="car"/>
+
+</beans>

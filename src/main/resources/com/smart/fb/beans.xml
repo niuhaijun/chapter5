@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns:p="http://www.springframework.org/schema/p"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/beans"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+  <bean class="com.smart.fb.Car" id="car"
+    p:brand="红旗CA72" p:maxSpeed="200" p:price="20000.00"/>
+
+  <bean class="com.smart.fb.CarFactoryBean" id="car1"
+    p:carInfo="红旗CA72,200,20000.00"/>
+
+  <bean class="org.springframework.beans.factory.config.ListFactoryBean"
+    id="favoriteList">
+    <property name="targetListClass" value="java.util.LinkedList"/>
+    <property name="singleton" value="false"/>
+    <property name="sourceList">
+      <list>
+        <value>看报</value>
+        <value>赛车</value>
+        <value>高尔夫</value>
+      </list>
+    </property>
+  </bean>
+  <util:list id="favoriteList1" list-class="java.util.LinkedList">
+    <value>看报</value>
+    <value>赛车</value>
+    <value>高尔夫</value>
+  </util:list>
+
+  <bean class="org.springframework.beans.factory.config.SetFactoryBean"
+    id="favoriteSet">
+    <property name="sourceSet">
+      <list>
+        <value>看报</value>
+        <value>赛车</value>
+        <value>高尔夫</value>
+      </list>
+    </property>
+  </bean>
+  <util:set id="favoriteSet1">
+    <value>看报</value>
+    <value>赛车</value>
+    <value>高尔夫</value>
+  </util:set>
+
+  <bean class="org.springframework.beans.factory.config.MapFactoryBean"
+    id="emails">
+    <property name="sourceMap">
+      <map>
+        <entry key="AM" value="会见客户"/>
+        <entry key="PM" value="公司内部会议"/>
+      </map>
+    </property>
+  </bean>
+
+  <util:map id="emails1">
+    <entry key="AM" value="会见客户"/>
+    <entry key="PM" value="公司内部会议"/>
+  </util:map>
+
+
+  <bean class="org.springframework.beans.factory.config.PropertiesFactoryBean"
+    id="emailProps">
+    <property name="location"
+      value="classpath:com/smart/fb/mails.properties">
+    </property>
+  </bean>
+  <util:properties id="emailProps1"
+    location="classpath:com/smart/fb/mails.properties"/>
+
+  <!-- 属性引用FactoryBean:常量 -->
+  <bean class="com.smart.fb.Car" id="car2">
+    <property name="brand" ref="hongQi"></property>
+  </bean>
+  <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"
+    id="hongQi">
+    <property name="staticField"
+      value="com.smart.fb.CarBrandType.HONG_QI">
+    </property>
+  </bean>
+  <bean class="com.smart.fb.Car" id="car3">
+    <property name="brand">
+      <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"
+        id="com.smart.fb.CarBrandType.HONG_QI">
+      </bean>
+    </property>
+  </bean>
+
+  <bean class="com.smart.fb.Car" id="car4">
+    <property name="brand">
+      <util:constant
+        static-field="com.smart.fb.CarBrandType.HONG_QI"/>
+    </property>
+  </bean>
+
+  <!-- 属性引用FactoryBean:属性路径引用 -->
+
+  <bean class="com.smart.fb.Boss" id="boss">
+    <property name="name" value="John"/>
+    <property name="car">
+      <bean class="com.smart.fb.Car">
+        <property name="brand" value="红旗CA72"/>
+      </bean>
+
+    </property>
+  </bean>
+  <bean class="com.smart.fb.Car" id="car5">
+    <property name="brand">
+      <bean class="org.springframework.beans.factory.config.PropertyPathFactoryBean"
+        id="boss.car.brand"/>
+    </property>
+  </bean>
+
+  <bean class="com.smart.fb.Car" id="car6">
+    <property name="brand">
+      <util:property-path path="boss.car.brand"/>
+    </property>
+  </bean>
+
+
+</beans>
